@@ -1,42 +1,19 @@
 import { Suspense } from "react";
 import { useRoutes, Routes, Route, Navigate } from "react-router-dom";
-import Home from "./components/home";
 import routes from "tempo-routes";
-import SimpleLoginPage from "./components/auth/SimpleLoginPage";
 import { AuthProvider } from "./context/AuthContext";
-import { useAuth } from "./context/AuthContext";
-
-// Protected route component
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user, isLoading } = useAuth();
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[hsl(var(--dark-bg-primary))]">
-        Loading...
-      </div>
-    );
-  }
-
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
-
-  return <>{children}</>;
-};
+import StaticHomePage from "./components/static/StaticHomePage";
+import StaticDashboardPage from "./components/static/StaticDashboardPage";
+import StaticContactPage from "./components/static/StaticContactPage";
+import StaticFeaturesPage from "./components/static/StaticFeaturesPage";
 
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/login" element={<SimpleLoginPage />} />
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <Home />
-          </ProtectedRoute>
-        }
-      />
+      <Route path="/" element={<StaticHomePage />} />
+      <Route path="/dashboard" element={<StaticDashboardPage />} />
+      <Route path="/contact" element={<StaticContactPage />} />
+      <Route path="/features" element={<StaticFeaturesPage />} />
       {import.meta.env.VITE_TEMPO === "true" && <Route path="/tempobook/*" />}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

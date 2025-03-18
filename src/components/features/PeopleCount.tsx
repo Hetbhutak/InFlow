@@ -1,38 +1,41 @@
-import React from "react";
-import { Card } from "../ui/card";
-import { ArrowLeft } from "lucide-react";
-import { Button } from "../ui/button";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import OriginDestinationForm from "./OriginDestinationForm";
 import PassengerDataDisplay from "./PassengerDataDisplay";
+import Header from "../dashboard/Header";
 
 const PeopleCount = () => {
   const navigate = useNavigate();
+  const [origin, setOrigin] = useState<string>("");
+  const [destination, setDestination] = useState<string>("");
+
+  const handleFormSubmit = (origin: string, destination: string) => {
+    setOrigin(origin);
+    setDestination(destination);
+    // In a real app, we would fetch filtered data here
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm">
-        <div className="container mx-auto px-4 py-3 flex items-center">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate("/")}
-            className="mr-2"
+    <div className="min-h-screen bg-[hsl(var(--dark-bg-primary))]">
+      <Header />
+      <div className="lg:ml-64">
+        <div className="container mx-auto px-4 py-6">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
           >
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <h2 className="text-xl font-bold">People Count</h2>
+            <h2 className="text-3xl font-bold gradient-text glow-text mb-8">
+              People Count Analytics
+            </h2>
+          </motion.div>
+
+          <OriginDestinationForm onSubmit={handleFormSubmit} />
+
+          <PassengerDataDisplay />
         </div>
-      </header>
-
-      <main className="container mx-auto px-4 py-6 space-y-6">
-        <Card className="p-4 bg-white shadow-sm">
-          <h3 className="font-medium text-lg mb-4">Filter Passenger Data</h3>
-          <OriginDestinationForm />
-        </Card>
-
-        <PassengerDataDisplay />
-      </main>
+      </div>
     </div>
   );
 };
